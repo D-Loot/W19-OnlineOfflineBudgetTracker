@@ -6,8 +6,7 @@ let db,
   tx,
   store;
 
-const request = window.indexedDB.open("budgetDB", 1);
-
+const request = window.indexedDB.open("BudgetStore", 1);
 
 request.onupgradeneeded = function(e) {
   const db = request.result;
@@ -38,6 +37,8 @@ request.onsuccess = function(e) {
     createCards(dataArray);
   });
 };
+
+function checkDB(){
   tx = db.transaction(["BudgetStore"], "readwrite");
   store = tx.objectStore("BudgetStore");
 
@@ -55,10 +56,6 @@ request.onsuccess = function(e) {
   }
   tx.oncomplete = function() {
     db.close();
-  };
-};
-function checkDB(){
-
 }
 
 // See Line 139 of ../index.js
