@@ -20,6 +20,24 @@ request.onerror = function(e) {
 
 request.onsuccess = function(e) {
   db = request.result;
+  fetch(`/api/transaction/bulk`, {
+    method: "POST",
+    body: JSON.stringify(getAll.result),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function() {
+    loadImages();
+  }).catch(function(err) {
+    console.log(err);
+    dataArray.forEach((item) => {
+      if(item._id === id) {
+        item.rating = rating;
+      }
+    });
+    createCards(dataArray);
+  });
+};
   tx = db.transaction(["BudgetStore"], "readwrite");
   store = tx.objectStore("BudgetStore");
 
