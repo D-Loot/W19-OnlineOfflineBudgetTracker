@@ -1,5 +1,43 @@
 # Unit 19 PWA Homework: Online/Offline Budget Trackers
 
+## Your Task
+
+The task for this project was to add offline/online functionality to an existing application. While online, this application is able to create transactions and save the information in a database. Once offline, the website remains functional with the ability to locally store transactions and to update the database when reconnected to the internet.
+
+The acceptance criteria are as follows below.
+
+## Acceptance Criteria
+
+```md
+GIVEN a user is on Budget App without an internet connection
+    WHEN the user inputs a withdrawal or deposit
+        THEN that will be shown on the page, and added to their transaction history when their connection is back online.
+```
+
+Heroku: https://dl-on-off-line-budget-tracker.herokuapp.com/
+GitHub: https://github.com/D-Loot/W19-OnlineOfflineBudgetTracker
+
+## Screenshots:
+
+![SS1](./Images/SS1.PNG)
+
+Here is the application while it is connected to the internet. The required files are downloaded to the indexedDB for later use when the user is offline.
+
+![SS2](./Images/SS2.PNG)
+The application is now able to be re-loaded even when there is no internet connection.
+
+![SS3](./Images/SS3.PNG)
+You are able to submit a transaction and store the information on your device to later update the database.
+
+![SS4](./Assets/SS4.PNG)
+The user is back online and the database is now up to date.
+
+# Background
+
+## Your Task
+
+# Unit 19 PWA Homework: Online/Offline Budget Trackers
+
 Add functionality to our existing Budget Tracker application to allow for offline access and functionality.
 
 The user will be able to add expenses and deposits to their budget with or without a connection. When entering transactions offline, they should populate the total when brought back online.
