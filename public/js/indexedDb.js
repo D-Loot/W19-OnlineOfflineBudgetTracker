@@ -48,8 +48,6 @@ function checkDB(){
       })
     }
   }
-  tx.oncomplete = function() {
-    db.close();
 }
 
 // See Line 139 of ../index.js
