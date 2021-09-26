@@ -5,8 +5,7 @@ let db;
 
 const request = indexedDB.open("BudgetStore", 1);
 
-const request = window.indexedDB.open("BudgetStore", 1);
-
+// https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#opening_a_database
 request.onupgradeneeded = function(e) {
   const db = request.result;
   db.createObjectStore("BudgetStore", { autoIncrement: true });
@@ -16,42 +15,38 @@ request.onerror = function(e) {
   console.log("There was an error");
 };
 
+// See 19-PWA\01-Activities\13-Stu_Caching_Fetching_Files\Solved\public\assets\js
 request.onsuccess = function(e) {
-  db = request.result;
-  fetch(`/api/transaction/bulk`, {
-    method: "POST",
-    body: JSON.stringify(getAll.result),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(function() {
-    loadImages();
-  }).catch(function(err) {
-    console.log(err);
-    dataArray.forEach((item) => {
-      if(item._id === id) {
-        item.rating = rating;
-      }
-    });
-    createCards(dataArray);
-  });
-};
+    // https://offering.solutions/blog/articles/2018/11/21/online-and-offline-sync-with-angular-and-indexeddb/
+  db = e.target.result;
+  if (navigator.onLine){
+    checkDB();
+  }
+}
 
 function checkDB(){
-  tx = db.transaction(["BudgetStore"], "readwrite");
-  store = tx.objectStore("BudgetStore");
-
-  db.onerror = function(e) {
-    console.log("error");
-  };
-  if (method === "put") {
-    store.put(object);
-  }
-  if (method === "get") {
-    const all = store.getAll();
-    all.onsuccess = function() {
-      resolve(all.result);
-    };
+  // const db = event.target.result;
+  const tx = db.transaction(["BudgetStore"], "readwrite");
+  const store = tx.objectStore("BudgetStore");
+  const getData = store.getAll();
+  getData.onsuccess = function(){
+    if (getData.result.length>0){
+      fetch("/api/transaction/bulk", {
+        method: "POST",
+        body: JSON.stringify(getData.result),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        }
+      })
+      // return the response as a json
+      .then(res=>res.json())
+      .then(()=>{
+        const tx = db.transaction(["BudgetStore"], "readwrite");
+        const store = tx.objectStore("BudgetStore");
+        store.clear();
+      })
+    }
   }
   tx.oncomplete = function() {
     db.close();
