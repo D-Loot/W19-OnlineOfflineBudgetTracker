@@ -1,10 +1,9 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#using_an_experimental_version_of_indexeddb
-const window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 
+let db;
 
-let db,
-  tx,
-  store;
+const request = indexedDB.open("BudgetStore", 1);
 
 const request = window.indexedDB.open("BudgetStore", 1);
 
@@ -60,8 +59,8 @@ function checkDB(){
 
 // See Line 139 of ../index.js
 function saveRecord(record){
-  tx = db.transaction(["BudgetStore"],"readwrite");
-  store = tx.objectStore("BudgetStore");
+  const tx = db.transaction(["BudgetStore"],"readwrite");
+  const store = tx.objectStore("BudgetStore");
   store.add(record)
 }
 
